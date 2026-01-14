@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface CustomerFormProps {
   onSubmit: (name: string, email: string) => void;
@@ -38,12 +39,7 @@ export default function CustomerForm({ onSubmit }: CustomerFormProps) {
           required
         />
       </div>
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-      >
-        Add Customer
-      </button>
+      <Button type="submit">Add Customer</Button>
     </form>
   );
 }
