@@ -10,7 +10,7 @@ const Error = () => {
           The page you&apos;re looking for isn&apos;t found, we suggest you back to home.
         </p>
         <Button asChild size='lg' className='rounded-lg text-base'>
-          <a href='#'>Back to home page</a>
+          <a href='/'>Back to home page</a>
         </Button>
       </div>
 

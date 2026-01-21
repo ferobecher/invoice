@@ -1,4 +1,5 @@
 import { MenuIcon, SearchIcon } from 'lucide-react'
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button'
 import {
@@ -21,21 +22,14 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
     <header className='bg-background sticky top-0 z-50'>
       <div className='mx-auto flex max-w-7xl items-center justify-between gap-8 px-4 py-7 sm:px-6'>
         <div className='text-muted-foreground flex flex-1 items-center gap-8 font-medium md:justify-center lg:gap-16'>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Home
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Products
-          </a>
-          <a href='#'>
+          <Link to='/'>
             <Logo className='text-foreground gap-3' />
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            About Us
-          </a>
-          <a href='#' className='hover:text-primary max-md:hidden'>
-            Contacts
-          </a>
+          </Link>
+          {navigationData.map((item, index) => (
+            <Link key={index} to={item.href} className='hover:text-primary max-md:hidden'>
+              {item.title}
+            </Link> 
+          ))}
         </div>
 
         <div className='flex items-center gap-6'>

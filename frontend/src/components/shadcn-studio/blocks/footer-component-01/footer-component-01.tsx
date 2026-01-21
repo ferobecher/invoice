@@ -1,10 +1,15 @@
 import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon } from 'lucide-react'
-
+import { Link } from 'react-router-dom'
 import { Separator } from '@/components/ui/separator'
 
 import Logo from '@/components/shadcn-studio/logo'
 
-const Footer = () => {
+type NavigationItem = {
+  title: string
+  href: string
+}[]
+
+const Footer = ({ navigationData }: { navigationData: NavigationItem }) => {
   return (
     <footer>
       <div className='mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 max-md:flex-col sm:px-6 sm:py-6 md:gap-6 md:py-8'>
@@ -15,18 +20,11 @@ const Footer = () => {
         </a>
 
         <div className='flex items-center gap-5 whitespace-nowrap'>
-          <a href='#' className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
-            About
-          </a>
-          <a href='#' className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
-            Features
-          </a>
-          <a href='#' className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
-            Works
-          </a>
-          <a href='#' className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
-            Career
-          </a>
+          {navigationData.map((item, index) => (
+            <Link key={index} to={item.href} className='hover:text-primary max-md:hidden'>
+              {item.title}
+            </Link>
+          ))}
         </div>
 
         <div className='flex items-center gap-4'>
