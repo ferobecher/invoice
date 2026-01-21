@@ -1,11 +1,34 @@
 import { useState, useEffect } from "react";
-import CustomerForm from "./components/CustomerForm";
+import CustomerForm from "@/components/CustomerForm";
+import { Button } from '@/components/ui/button';
+import Error from '@/components/shadcn-studio/blocks/error-page-01/error-page-01';
+import Navbar from '@/components/shadcn-studio/blocks/navbar-component-01/navbar-component-01';
+import Footer from '@/components/shadcn-studio/blocks/footer-component-01/footer-component-01';
 
 interface Customer {
   id: number;
   name: string;
   email: string;
 }
+
+const navigationData = [
+  {
+    title: 'Home',
+    href: '#'
+  },
+  {
+    title: 'Products',
+    href: '#'
+  },
+  {
+    title: 'About Us',
+    href: '#'
+  },
+  {
+    title: 'Contacts',
+    href: '#'
+  }
+]
 
 function App() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -37,7 +60,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-600 p-8">
+    <div className="min-h-screen">
+      <Navbar navigationData={navigationData}/>
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-3xl font-bold">Invoice App</h1>
 
@@ -58,17 +82,18 @@ function App() {
                   <div className="font-medium">{customer.name}</div>
                   <div className="text-sm text-gray-200">{customer.email}</div>
                 </div>
-                <button
+                <Button
                   onClick={() => handleDelete(customer.id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                 >
                   Delete
-                </button>
+                </Button>
               </div>
             ))}
           </div>
         </div>
       </div>
+       <Error/>
+       <Footer/>
     </div>
   );
 }
