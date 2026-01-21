@@ -6,12 +6,13 @@ datasource db {
   provider = "postgresql"
 }
 
-model Customer {
+model Subject {
   id        Int       @id @default(autoincrement())
   name      String
   email     String    @unique
   createdAt DateTime  @default(now())
-  invoices  Invoice[]
+  invoicesAsSupplier Invoice[] @relation("SupplierInvoices")
+  invoicesAsCustomer Invoice[] @relation("CustomerInvoices")
 }
 
 model Invoice {
@@ -21,8 +22,10 @@ model Invoice {
   date       DateTime @default(now())
   dueDate    DateTime
   paid       Boolean  @default(false)
+  supplierId Int
+  supplier   Subject  @relation("SupplierInvoices", fields: [supplierId], references: [id])
   customerId Int
-  customer   Customer @relation(fields: [customerId], references: [id])
+  customer   Subject  @relation("CustomerInvoices", fields: [customerId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
