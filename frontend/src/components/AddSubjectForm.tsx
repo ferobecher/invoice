@@ -55,7 +55,7 @@ const AddSubjectForm = ({ onSubjectAdded }: AddSubjectFormProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Subject</Button>
+        <Button className="cursor-pointer">Add Subject</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
