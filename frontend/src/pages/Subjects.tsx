@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import AddSubjectForm from "@/components/AddSubjectForm";
 
-interface Subject {
+export interface Subject {
   id: number;
   name: string;
   email: string;

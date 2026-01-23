@@ -3,6 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Invoice } from "@/pages/Invoice";
+import type { Subject } from "@/pages/Subjects";
+
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 
 interface InvoiceEditProps {
   invoice: Invoice | null;
@@ -12,6 +22,7 @@ interface InvoiceEditProps {
 }
 
 const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
+  const [subjects, setSubjects] = useState<[]>([]);
   const [formData, setFormData] = useState({
     invoiceNumber: "",
     issueDate: "",
@@ -26,8 +37,8 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
     if (invoice && mode === "edit") {
       setFormData({
         invoiceNumber: invoice.invoiceNumber,
-        issueDate: new Date(invoice.issueDate).toISOString().split('T')[0],
-        dueDate: new Date(invoice.dueDate).toISOString().split('T')[0],
+        issueDate: new Date(invoice.issueDate).toISOString().split("T")[0],
+        dueDate: new Date(invoice.dueDate).toISOString().split("T")[0],
         customerId: invoice.customerId.toString(),
         supplierId: invoice.supplierId.toString(),
         totalAmount: invoice.totalAmount.toString(),
@@ -35,6 +46,23 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
       });
     }
   }, [invoice, mode]);
+
+  const fetchSubjects = () => {
+    fetch("http://localhost:3000/api/subjects/names")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch subjects");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSubjects(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +85,13 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubjectSelect = (
+    subjectId: number,
+    field: "customerId" | "supplierId",
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: subjectId.toString() }));
   };
 
   return (
@@ -120,30 +155,54 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
         {/* Customer and Supplier */}
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="customerId">Customer ID</Label>
-            <Input
-              id="customerId"
-              name="customerId"
-              type="number"
-              value={formData.customerId}
-              onChange={handleChange}
-              placeholder="1"
+            <Label htmlFor="customer">Customer</Label>
+            <Combobox
+              items={subjects}
               required
-            />
-            {/* TODO: Replace with a subject selector dropdown */}
+              onValueChange={(value) => {
+                const subject = subjects.find((s) => s.name === value);
+                if (subject) {
+                  handleSubjectSelect(subject.id, "customerId");
+                }
+              }}
+            >
+              <ComboboxInput placeholder="Select a customer" />
+              <ComboboxContent>
+                <ComboboxEmpty>No items found.</ComboboxEmpty>
+                <ComboboxList>
+                  {(subject) => (
+                    <ComboboxItem key={subject.id} value={subject}>
+                      {subject.name}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="supplierId">Supplier ID</Label>
-            <Input
-              id="supplierId"
-              name="supplierId"
-              type="number"
-              value={formData.supplierId}
-              onChange={handleChange}
-              placeholder="1"
+            <Label htmlFor="supplier">Supplier</Label>
+            <Combobox
+              items={subjects}
               required
-            />
-            {/* TODO: Replace with a subject selector dropdown */}
+              onValueChange={(value) => {
+                const subject = subjects.find((s) => s.name === value);
+                if (subject) {
+                  handleSubjectSelect(subject.id, "supplierId");
+                }
+              }}
+            >
+              <ComboboxInput placeholder="Select a supplier" />
+              <ComboboxContent>
+                <ComboboxEmpty>No items found.</ComboboxEmpty>
+                <ComboboxList>
+                  {(subject) => (
+                    <ComboboxItem key={subject.id} value={subject}>
+                      {subject.name}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
           </div>
         </div>
 
