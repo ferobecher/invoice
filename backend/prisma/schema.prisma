@@ -7,25 +7,26 @@ datasource db {
 }
 
 model Subject {
-  id        Int       @id @default(autoincrement())
-  name      String
-  email     String    @unique
-  createdAt DateTime  @default(now())
+  id                 Int       @id @default(autoincrement())
+  name               String
+  email              String    @unique
+  createdAt          DateTime  @default(now())
   invoicesAsSupplier Invoice[] @relation("SupplierInvoices")
   invoicesAsCustomer Invoice[] @relation("CustomerInvoices")
 }
 
 model Invoice {
-  id         Int      @id @default(autoincrement())
-  number     String   @unique
-  amount     Float
-  date       DateTime @default(now())
-  dueDate    DateTime
-  paid       Boolean  @default(false)
-  supplierId Int
-  supplier   Subject  @relation("SupplierInvoices", fields: [supplierId], references: [id])
-  customerId Int
-  customer   Subject  @relation("CustomerInvoices", fields: [customerId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  invoiceNumber String   @unique
+  totalAmount   Float
+  issueDate     DateTime @default(now())
+  dueDate       DateTime
+  paid          Boolean  @default(false)
+  supplierId    Int
+  supplier      Subject  @relation("SupplierInvoices", fields: [supplierId], references: [id])
+  customerId    Int
+  customer      Subject  @relation("CustomerInvoices", fields: [customerId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  status        String
 }

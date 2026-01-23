@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import subjectsRoutes from './routes/subjects'
+import invoicesRoutes from './routes/invoices'
 
 //takes .env content into process.env
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());  //middleware that only parses json (must have header '
 
 //routes
 app.use('/api/subjects', subjectsRoutes)
+app.use('/api/invoices', invoicesRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
