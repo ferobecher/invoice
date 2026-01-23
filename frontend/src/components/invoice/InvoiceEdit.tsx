@@ -160,7 +160,7 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
               items={subjects}
               required
               onValueChange={(value) => {
-                const subject = subjects.find((s) => s.name === value);
+                const subject = subjects.find((s) => s.id === value.id);
                 if (subject) {
                   handleSubjectSelect(subject.id, "customerId");
                 }
@@ -185,7 +185,7 @@ const InvoiceEdit = ({ invoice, mode, onSave, onCancel }: InvoiceEditProps) => {
               items={subjects}
               required
               onValueChange={(value) => {
-                const subject = subjects.find((s) => s.name === value);
+                const subject = subjects.find((s) => s.id === value.id);
                 if (subject) {
                   handleSubjectSelect(subject.id, "supplierId");
                 }
